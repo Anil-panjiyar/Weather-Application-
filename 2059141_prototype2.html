@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather podcasting</title>
+
+
+    <link rel="icon" href="https://media.gettyimages.com/photos/weather-picture-id184919103?s=612x612">
+    <!-- using shortcut icon in website  -->
+</head>
+<style>
+    /* css file------------------------------------------------  */
+    .one {
+        font-size: medium;
+        font-size: 20px;
+        color: orange;
+    }
+
+    .box {
+        text-align: center;
+        padding-top: 150px;
+        padding-bottom: 75px;
+    }
+
+    .box {
+        border: solid 5px gray;
+        background-color: purple;
+        width: 1200px;
+    }
+
+    .box2 {
+
+        width: 600px;
+        height: 400px;
+        padding: 20px;
+        text-align: center;
+        margin-left: 300px;
+        border-radius: 40px;
+        background-color:black;
+        opacity: 70%;
+
+    }
+
+    .one:hover {
+        color: cornsilk;
+
+    }
+
+    #roo {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: yellow;
+    }
+
+    .box {
+        background-image: url("https://images.pexels.com/photos/3586966/pexels-photo-3586966.jpeg?cs=srgb&dl=pexels-carlos-oliva-3586966.jpg&fm=jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
+
+<body>  
+    <!-- using id in each span to display the information  -->
+    <!-- Using span to print in the same line -->
+    <!-- using same class named (one)in all the div to change the fontsize  beside the main div named (box)  -->
+
+    <div class="box">
+
+        <!-- main div to put all the content here to add background color using css -->
+        <div class="box2">
+            <input class="search" type="text" id="sum" placeholder="EnterCityName">
+
+            <input type="submit" value="Search" id="button">
+            
+            <h1 id="roo">Today's Weather Forecast</h1>
+            <div class="one">
+                <span>City :</i></span><span id="city"></span>
+            </div>
+            <!-- End of the div to display the city name  -->
+
+            <div class="one">
+                <span> Weather Condition:</i> </span>
+                <span id="coludy"></span>
+            </div>
+            <!-- End of the div to display the Weather condition  -->
+
+            <div>
+                <p id="WeatherIcon"></p>
+            </div>
+            <!-- creating another div and class to display the icon of weather  -->
+
+            <div class="one">
+                <span>Temperature:</span>
+                <span id="temperature"></span>&#8451;
+                <!-- Using UTF-8 General Punctuation to display the degree
+     sign  -->
+            </div>
+
+            <div class="one">
+                <span>Time:</span>
+                <span id="dat"></span>
+                </div>
+
+           
+
+            <!-- End of div  to display  temperature -->
+            <div class="one">
+                <span> Wind Speed</span>
+                <span id="wind"></span>K/h
+            </div>
+            <!-- End of div  to display the Wind speed  -->
+            <div class="one">
+                <span> Minumun Temperature </span>
+                <span id="minimum"> </span>&#8451;
+            </div>
+            <!-- End of the div to display the minimum temperature  -->
+            <div class="one">
+                <span> Maximum Temperature </span>
+                <span id="max"></span>&#8451;
+            </div>
+            <!-- End of the div to display the maximum temperature -->
+            <div class="one">
+                <span><span>Humidity:</span> <span id=dity></span>&#x25;
+                </span>
+            </div>
+            <!-- End of the div to display the Humidity -->
+        </div>
+        <!-- End of the main div which was used as main container -->
+    <!-- linkig to the javascript file  -->
+    <script>//-----------------javaScript code------------
+
+        //  Firstly creating function and api to fetch the data 
+        // storing value in vairable
+
+        const mouse = document.getElementById("button");
+        mouse.addEventListener('click', function() {
+            var search = document.getElementById("sum").value;
+            fetch("http://localhost/Folder/Data-import.php?city=" + search)
+
+                .then((result) => result.json())// converting server into json format
+                .then((result) => {
+
+                    const icon = result["icon"];
+                    const temp = result["weather_temperature"];
+                    convert = parseInt(temp - 273.15);
+                    //extracting temperature from above APi
+                    // also parseInt to convert into to integar 
+                    // using formula to convert kelvin into celcius
+                    const win = result["weather_wind"];
+                    const coloudy = result["weather_description"];
+                    const min = result["Minimum_Temperature"];
+                    convert1 = parseInt(min - 273.15);
+                    // using formula to convert kelvin into celcius 
+                    const max = result["Maximum_temperature"];
+                    convert2 = parseInt(max - 273.15);
+                    // using formula to convert kelvin into celcius
+                    const dity1 = result["Humidity"];
+                    const city1 = result["city"];
+                    const samaya = result["weather_when"];
+
+                    // Giving index value to get value to extract
+                    // value from weather api
+                    document.getElementById("WeatherIcon").innerHTML = "<img src = \"http://openweathermap.org/img/w/" + icon + ".png\">";
+                    document.getElementById("city").innerHTML = city1;
+                    document.getElementById("minimum").innerHTML = convert1;
+                    document.getElementById("wind").innerHTML = win;
+                    document.getElementById("coludy").innerHTML = coloudy;
+                    document.getElementById("max").innerHTML = convert2;
+                    document.getElementById("temperature").innerHTML = convert;
+                    document.getElementById("dity").innerHTML = dity1;
+                    document.getElementById("dat").innerHTML = samaya;
+
+                    //     document.getElementById() returns an Element object 
+                    //epresenting the element whose id property matches the specified string used in HTML
+
+                })
+                .catch(err => {
+                    // Display errors in console
+                    console.log(err);
+                });
+
+        })
+
+    </script>
+</body>
+
+</html>
